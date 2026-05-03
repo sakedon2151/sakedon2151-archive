@@ -54,11 +54,11 @@ docs/
 
 ```txt
 src/
+  mdx-components.tsx
   app/
     layout.tsx
     globals.css
     page.tsx
-    mdx-components.tsx
     robots.ts
     sitemap.ts
     opengraph-image.tsx

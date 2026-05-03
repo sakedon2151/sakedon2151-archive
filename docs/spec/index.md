@@ -21,9 +21,9 @@
 docs/spec/
   index.md
   global/
-    *.md
+    *.spec.md
   domains/
-    *.md
+    *.spec.md
 ```
 
 - `global/`: 여러 기능에 걸친 기반 스펙. 예: MDX 콘텐츠 파이프라인, SEO, 라우팅, 디자인 토큰.
@@ -50,16 +50,16 @@ Status 변경 기준:
 
 ## Naming
 
-파일명은 lowercase kebab-case를 사용한다.
+스펙 파일명은 `<action>.spec.md` 형식을 사용한다. `<action>`은 lowercase kebab-case로 작성한다.
 
 Examples:
 
-- `global/content-mdx.md`
-- `global/routing-seo.md`
-- `global/prose-components.md`
-- `domains/writing-index.md`
-- `domains/writing-detail.md`
-- `domains/project-index.md`
+- `global/content-mdx.spec.md`
+- `global/routing-seo.spec.md`
+- `global/prose-components.spec.md`
+- `domains/writing-index.spec.md`
+- `domains/writing-detail.spec.md`
+- `domains/project-index.spec.md`
 
 한 스펙은 하나의 주요 결정 또는 기능 흐름만 다룬다. 파일이 너무 커지면 shared 기반 스펙과 domain 스펙으로 나눈다.
 
@@ -244,31 +244,31 @@ Examples:
 
 작성 순서는 다음을 권장한다.
 
-1. `global/content-mdx.md`
+1. `global/content-mdx.spec.md`
    - MDX 설치 방식
    - content directory 구조
    - metadata schema
    - draft/published 처리
 
-2. `global/routing-seo.md`
+2. `global/routing-seo.spec.md`
    - `/writing`, `/writing/[slug]`, `/projects`, `/projects/[slug]`
    - metadata, canonical, sitemap, robots, OG image 정책
    - 검색 색인 품질 기준
 
-3. `global/prose-components.md`
+3. `global/prose-components.spec.md`
    - MDX에서 허용할 컴포넌트
    - prose, code, image, callout, metadata 컴포넌트
    - accessibility와 responsive 기준
 
-4. `domains/writing-index.md`
+4. `domains/writing-index.spec.md`
    - 글 목록 UX
    - 정렬, 태그, excerpt, empty state
 
-5. `domains/writing-detail.md`
+5. `domains/writing-detail.spec.md`
    - 글 상세 페이지
    - prose layout, metadata, related navigation
 
-6. `domains/projects.md`
+6. `domains/projects.spec.md`
    - 프로젝트 목록과 상세 페이지
    - 글과 프로젝트의 콘텐츠 모델 차이
 
