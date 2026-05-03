@@ -2,97 +2,226 @@
 
 Source reference: https://emilkowal.ski
 
-이 프로젝트의 디자인 시스템은 참고 사이트의 화면을 그대로 복제하기보다, 그 안에서 반복되는 태도를 추출해 블로그에 맞게 정리한다. 핵심은 절제된 UI, 좁은 본문 폭, 낮은 대비, 큰 섹션 간격, 그리고 카드보다 텍스트 리스트를 우선하는 구조다.
+이 디자인 시스템은 참고 사이트의 표면을 복제하지 않는다. 대신 절제된 UI, 미니멀리즘, 좁은 읽기 폭, 낮은 대비, 큰 호흡의 섹션 리듬을 이 블로그에 맞는 규칙으로 정리한다.
 
-## Principles
+## Design Principles
 
-- Content first: 장식보다 글의 리듬과 탐색성이 먼저다.
-- Quiet hierarchy: 크기 차이보다 굵기, 색, 간격으로 계층을 만든다.
-- One-column reading: 기본 화면은 단일 컬럼이며, 본문 폭은 넓히지 않는다.
-- Minimal chrome: 버튼, 배너, 카드, 그림자는 필요한 상태와 행동에만 쓴다.
-- Warm neutrals: 완전한 흰색/검정만으로 끝내지 않고, 약간 따뜻한 회색을 쓴다.
+- Content first: 화면은 글과 링크를 돕는다. 장식은 콘텐츠보다 앞서지 않는다.
+- Quiet hierarchy: 크기보다 굵기, 색, 간격으로 계층을 만든다.
+- One-column default: 블로그의 기본 경험은 한 줄기의 읽기 흐름이다.
+- Minimal chrome: 버튼, 카드, 그림자, 배지는 필요한 기능이 있을 때만 쓴다.
+- Warm neutrality: 완전한 흰색/검정 대비보다 따뜻한 회색의 낮은 대비를 쓴다.
+- Durable pages: 유행하는 장식보다 오래 봐도 피로하지 않은 조형을 우선한다.
 
-## Tokens
+## Token Model
+
+Design tokens live in `src/app/globals.css`. Component CSS must consume semantic tokens rather than duplicating raw values.
 
 ### Layout
 
-- Content width: `692px`
-- Comfortable measure: `590px`
-- Page x padding: `24px`
-- Desktop y padding: `64px`
-- Mobile y padding: `48px`
-- Desktop section gap: `128px`
-- Mobile section gap: `64px`
+| Token | Value | Purpose |
+| --- | ---: | --- |
+| `--layout-content` | `692px` | index/list page max width |
+| `--layout-measure` | `590px` | prose max width |
+| `--space-page-x` | `24px` | horizontal page gutter |
+| `--space-page-y` | `64px` | desktop vertical page padding |
+| `--space-section` | `128px` | desktop section gap |
+| mobile section gap | `64px` | compact section rhythm |
+
+Rules:
+
+- Do not widen prose to fill desktop screens.
+- Use the content width as a ceiling, not a fixed desktop column.
+- Prefer vertical rhythm over bordered section containers.
 
 ### Typography
 
-- Base size: `16px`
-- Base line height: `24px`
-- Regular weight: `400`
-- Emphasis weight: `500`
-- Letter spacing: `0`
-- Headings on index pages should stay body-sized unless a page truly needs editorial scale.
+| Role | Size | Line height | Weight |
+| --- | ---: | ---: | ---: |
+| body | `16px` | `24px` | `400` |
+| section label | `16px` | `24px` | `500` |
+| list title | `16px` | `24px` | `400` or `500` by context |
+| metadata | `16px` | `24px` | `400` |
+
+Rules:
+
+- Index headings stay body-sized unless a spec explicitly calls for editorial scale.
+- Do not use negative letter spacing.
+- Do not scale font size with viewport width.
+- Korean copy uses `word-break: keep-all` and `overflow-wrap: break-word`.
+- Prose should feel readable before it feels styled.
 
 ### Color
 
-Light:
+Light palette:
 
-- Background: `#fdfdfc`
-- Surface: `#ffffff`
-- Hover surface: `#f5f4f4`
-- Primary text: `#21201c`
-- Muted text: `#63635e`
-- Subtle text: `#8d8d86`
-- Border: `#e9e9e7`
+| Token | Value |
+| --- | --- |
+| background | `#fdfdfc` |
+| surface | `#ffffff` |
+| muted surface | `#f9f9f8` |
+| hover surface | `#f5f4f4` |
+| primary text | `#21201c` |
+| muted text | `#63635e` |
+| subtle text | `#8d8d86` |
+| border | `#e9e9e7` |
 
-Dark:
+Dark palette:
 
-- Background: `#0b0b09`
-- Surface: `#111110`
-- Hover surface: `#151514`
-- Primary text: `#eeeeec`
-- Muted text: `#b5b3ad`
-- Subtle text: `#6f6d66`
-- Border: `#2a2a28`
+| Token | Value |
+| --- | --- |
+| background | `#0b0b09` |
+| surface | `#111110` |
+| muted surface | `#191918` |
+| hover surface | `#151514` |
+| primary text | `#eeeeec` |
+| muted text | `#b5b3ad` |
+| subtle text | `#6f6d66` |
+| border | `#2a2a28` |
 
-### Radius And Motion
+Rules:
 
-- Small radius: `4px`
-- List hover radius: `6px`
-- Pills or inputs: `999px`
-- Hover/focus duration: `140ms`
-- Easing: `cubic-bezier(0.2, 0, 0, 1)`
+- Primary text should be quiet but readable.
+- Muted text is for descriptions, dates, excerpts, and supporting prose.
+- Avoid saturated accents unless a spec defines a semantic state.
+- Link underline color may be quieter than text, but hover/focus must be clear.
 
-## Components
+### Radius, Shadow, Motion
+
+- `--radius-sm`: `4px`
+- `--radius-md`: `6px`
+- `--radius-full`: `999px`
+- list hover duration: `140ms`
+- easing: `cubic-bezier(0.2, 0, 0, 1)`
+- focus ring: tokenized two-ring shadow
+
+Rules:
+
+- Rounded corners are subtle. Default repeated list items use `6px`.
+- Shadows are rare. Prefer spacing and background change.
+- Motion is functional and short.
+- Respect `prefers-reduced-motion`.
+
+## Page Patterns
 
 ### Page Shell
 
-The page shell is centered, narrow, and mostly unframed. It should not sit inside a card. Use one column first, then add wider layouts only for pages that genuinely need comparison or media.
+The shell is centered and unframed. It should not look like a card.
+
+Use for:
+
+- home
+- writing index
+- project index
+- article detail pages with prose width constraints
+
+Avoid:
+
+- full-width marketing hero sections
+- nested cards
+- centered paragraphs
 
 ### Identity Header
 
-The header is a small two-line signature:
+The default header is a compact text signature.
 
-- Name: medium weight, primary text.
-- Role or descriptor: medium weight, muted text, tight line-height.
-- Bottom margin is intentionally large to make the first content section feel deliberate.
+- First line: identity, medium weight, primary text.
+- Second line: role/descriptor, medium weight, muted text, tight line-height.
+- The gap after the header is intentionally large.
 
 ### Section Label
 
-Section labels are body-sized, medium-weight text. They are not large display headings. The surrounding whitespace gives them authority.
+Section labels are body-sized text with medium weight. They are not decorative eyebrows or pills.
+
+Use labels such as:
+
+- `오늘`
+- `글`
+- `프로젝트`
+- `노트`
 
 ### Text List Item
 
-The default repeated element is a text link with title and description. On desktop it may have a subtle hover fill with negative horizontal margin. On mobile it becomes plain text spacing with no visible card treatment.
+The default repeated pattern is a text link with title and description.
+
+Desktop:
+
+- negative horizontal margin is allowed for hover affordance
+- hover uses quiet surface fill
+- no border by default
+
+Mobile:
+
+- no hover-only visual dependency
+- larger vertical gap
+- no card background
 
 ### Prose
 
-Paragraphs use muted text by default, with `16px/24px` rhythm. Avoid centered body copy and avoid long line lengths.
+Article prose should be sparse and durable.
 
-## Do Not
+- Use `article` as the main wrapper.
+- One visible `h1` per article.
+- Paragraphs use muted text only when the whole prose style calls for quiet reading; use primary text for dense long-form reading if contrast needs improve.
+- Code, blockquote, image, and callout treatments must be specified before implementation.
 
-- Do not add marketing-style hero sections to the blog index.
-- Do not use decorative gradient blobs, oversized cards, or loud shadows.
-- Do not use rounded pills for plain labels.
-- Do not make section headings large just to create hierarchy.
-- Do not widen the reading column to fill desktop screens.
+## Component Patterns
+
+### Link
+
+- Inline prose links use underline.
+- List links may omit underline if layout clearly communicates clickability.
+- External links should not require icon decoration by default.
+
+### Button
+
+Buttons are for actions, not navigation lists.
+
+- Primary button: dark fill, light text, full radius only when it is a true compact command.
+- Secondary button: border or quiet surface.
+- Icon-only buttons require accessible names and stable square dimensions.
+
+### Card
+
+Cards are not the default blog primitive.
+
+Use cards only for:
+
+- repeated visual media items
+- modal/dialog surfaces
+- framed tools or previews
+
+Do not wrap page sections in cards.
+
+### MDX Components
+
+Approved MDX components should look like part of prose, not app chrome.
+
+Initial candidates:
+
+- `ProseImage`
+- `CodeBlock`
+- `Callout`
+- `Footnote`
+- `PostMeta`
+
+Each MDX component requires a spec before implementation.
+
+## Responsive Rules
+
+- Mobile starts at the same content-first hierarchy.
+- Do not shrink text below `16px` for prose.
+- Avoid layout shifts on hover, focus, or dynamic content.
+- Keep readable line length with width constraints, not viewport font scaling.
+- Verify mobile screenshots for Korean line breaks.
+
+## Anti-Patterns
+
+- Oversized hero sections on the blog index
+- Decorative gradient blobs, bokeh, or ornamental backgrounds
+- Card grids for simple writing lists
+- Badge/pill labels used as section titles
+- Large shadows on content surfaces
+- Low-contrast text below readable thresholds
+- Image or icon decoration that does not communicate content
+- Widening content because desktop has empty space
