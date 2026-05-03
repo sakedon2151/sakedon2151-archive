@@ -1,46 +1,10 @@
 import Link from "next/link";
+import {
+  getPublishedProjectEntries,
+  getPublishedWritingEntries,
+} from "@/lib/content/registry";
+import { getEntryPathname } from "@/lib/url/site";
 import styles from "./page.module.css";
-
-const projects = [
-  {
-    title: "Blog System",
-    description: "글, 노트, 레퍼런스를 한 줄기 흐름으로 정리하는 개인 블로그.",
-    href: "/projects/blog-system",
-  },
-  {
-    title: "Design Notes",
-    description: "작은 UI 결정과 구현 감각을 기록하는 디자인 엔지니어링 노트.",
-    href: "/projects/design-notes",
-  },
-  {
-    title: "Interface Archive",
-    description: "절제된 인터페이스 패턴을 관찰하고 다시 사용할 수 있게 저장.",
-    href: "/projects/interface-archive",
-  },
-];
-
-const writings = [
-  {
-    title: "절제된 UI를 위한 밀도",
-    description: "공백, 대비, 타이포그래피가 화면의 온도를 결정하는 방식.",
-    href: "/writing/restrained-ui-density",
-  },
-  {
-    title: "작게 보이는 링크의 힘",
-    description: "카드 없이도 충분히 탐색 가능한 리스트 인터랙션 만들기.",
-    href: "/writing/quiet-links",
-  },
-  {
-    title: "디자인 시스템은 감각의 문서화다",
-    description: "색상표보다 먼저 합의해야 하는 태도와 규칙.",
-    href: "/writing/design-system-as-taste",
-  },
-  {
-    title: "미니멀리즘과 비어 있음의 차이",
-    description: "덜어낸 화면이 허전하지 않게 느껴지는 조건.",
-    href: "/writing/minimalism-not-empty",
-  },
-];
 
 const notes = [
   "본문 폭은 좁게 유지하고, 섹션 간격은 크게 둔다.",
@@ -49,6 +13,9 @@ const notes = [
 ];
 
 export default function Home() {
+  const projects = getPublishedProjectEntries();
+  const writings = getPublishedWritingEntries();
+
   return (
     <main className={styles.shell}>
       <header className={styles.header}>
@@ -83,8 +50,8 @@ export default function Home() {
           {projects.map((project) => (
             <Link
               className={styles.listItem}
-              href={project.href}
-              key={project.title}
+              href={getEntryPathname(project)}
+              key={project.slug}
             >
               <span className={styles.itemTitle}>{project.title}</span>
               <span className={styles.itemDescription}>
@@ -103,8 +70,8 @@ export default function Home() {
           {writings.map((writing) => (
             <Link
               className={styles.listItem}
-              href={writing.href}
-              key={writing.title}
+              href={getEntryPathname(writing)}
+              key={writing.slug}
             >
               <span className={styles.itemTitle}>{writing.title}</span>
               <span className={styles.itemDescription}>

@@ -1,0 +1,23 @@
+export const metadata = {
+  title: "Blog System",
+  description: "글, 노트, 레퍼런스를 한 줄기 흐름으로 정리하는 개인 블로그.",
+  publishedAt: "2026-05-03",
+  tags: ["nextjs", "mdx"],
+  draft: false,
+};
+
+## 목표
+
+이 프로젝트는 Next.js App Router와 로컬 MDX를 기반으로 글과 프로젝트를
+작게 발행하는 개인 블로그 시스템이다.
+
+## 설계 방향
+
+콘텐츠는 로컬 파일로 관리하고, routing과 SEO는 같은 registry를 바라본다.
+초기 버전은 CMS나 데이터베이스 없이 작게 유지한다.
+
+<CodeBlock language="ts" filename="content.ts">
+{`export function getAllPublishedEntries() {
+  return entries.filter((entry) => entry.draft !== true);
+}`}
+</CodeBlock>

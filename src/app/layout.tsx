@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { siteDescription, siteName } from "@/lib/seo/metadata";
+import { getCanonicalUrl, getSiteUrl } from "@/lib/url/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,8 +15,28 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "sakedon2151",
-  description: "절제된 UI와 미니멀리즘을 바탕으로 만든 개인 블로그.",
+  metadataBase: new URL(getSiteUrl()),
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  alternates: {
+    canonical: getCanonicalUrl("/"),
+  },
+  openGraph: {
+    title: siteName,
+    description: siteDescription,
+    url: getCanonicalUrl("/"),
+    siteName,
+    locale: "ko_KR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteName,
+    description: siteDescription,
+  },
 };
 
 export default function RootLayout({
